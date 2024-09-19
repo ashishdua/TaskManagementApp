@@ -1,0 +1,10 @@
+# .gitignore
+# Node.js
+node_modules/
+.env
+yarn-error.log
+
+# .NET Core
+bin/
+obj/
+*.user
