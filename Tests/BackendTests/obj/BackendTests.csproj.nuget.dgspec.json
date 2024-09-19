@@ -1,7 +1,7 @@
 {
   "format": 1,
   "restore": {
-    "/Users/ashish/Projects/RamSoft_Assessment/TaskManagementApp/src/WebAPI/WebAPI.csproj": {}
+    "/Users/ashish/Projects/RamSoft_Assessment/TaskManagementApp/Tests/BackendTests/BackendTests.csproj": {}
   },
   "projects": {
     "/Users/ashish/Projects/RamSoft_Assessment/TaskManagementApp/src/Application/Application.csproj": {
@@ -172,14 +172,14 @@
         }
       }
     },
-    "/Users/ashish/Projects/RamSoft_Assessment/TaskManagementApp/src/WebAPI/WebAPI.csproj": {
+    "/Users/ashish/Projects/RamSoft_Assessment/TaskManagementApp/Tests/BackendTests/BackendTests.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/ashish/Projects/RamSoft_Assessment/TaskManagementApp/src/WebAPI/WebAPI.csproj",
-        "projectName": "WebAPI",
-        "projectPath": "/Users/ashish/Projects/RamSoft_Assessment/TaskManagementApp/src/WebAPI/WebAPI.csproj",
+        "projectUniqueName": "/Users/ashish/Projects/RamSoft_Assessment/TaskManagementApp/Tests/BackendTests/BackendTests.csproj",
+        "projectName": "BackendTests",
+        "projectPath": "/Users/ashish/Projects/RamSoft_Assessment/TaskManagementApp/Tests/BackendTests/BackendTests.csproj",
         "packagesPath": "/Users/ashish/.nuget/packages/",
-        "outputPath": "/Users/ashish/Projects/RamSoft_Assessment/TaskManagementApp/src/WebAPI/obj/",
+        "outputPath": "/Users/ashish/Projects/RamSoft_Assessment/TaskManagementApp/Tests/BackendTests/obj/",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "/usr/local/share/dotnet/sdk/NuGetFallbackFolder"
@@ -219,13 +219,25 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
-            "Microsoft.AspNetCore.OpenApi": {
+            "Microsoft.NET.Test.Sdk": {
               "target": "Package",
-              "version": "[8.0.0, )"
+              "version": "[17.6.0, )"
             },
-            "Swashbuckle.AspNetCore": {
+            "NUnit": {
               "target": "Package",
-              "version": "[6.4.0, )"
+              "version": "[3.13.3, )"
+            },
+            "NUnit.Analyzers": {
+              "target": "Package",
+              "version": "[3.6.1, )"
+            },
+            "NUnit3TestAdapter": {
+              "target": "Package",
+              "version": "[4.2.1, )"
+            },
+            "coverlet.collector": {
+              "target": "Package",
+              "version": "[6.0.0, )"
             }
           },
           "imports": [
@@ -240,9 +252,6 @@
           "assetTargetFallback": true,
           "warn": true,
           "frameworkReferences": {
-            "Microsoft.AspNetCore.App": {
-              "privateAssets": "none"
-            },
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
