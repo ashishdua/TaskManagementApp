@@ -1,69 +1,66 @@
 import React, { useState } from 'react';
-import { addWorkItem } from '../services/APIService';
+import { Button, TextField, Box, Typography } from '@mui/material';
+import PropTypes from 'prop-types';
+import '../styles/AddWorkItemForm.css';
 
-const AddWorkItemForm = () => {
+const AddWorkItemForm = ({ addWorkItem }) => {
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
     const [deadline, setDeadline] = useState('');
-    const [error, setError] = useState('');
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = (e) => {
         e.preventDefault();
-        setError('');
-
-        if (!name || !description || !deadline) {
-            setError('All fields are required.');
-            return;
-        }
-
-        try {
-            const newWorkItem = { name, description, deadline };
-
-            await addWorkItem(newWorkItem);
-            console.log("WorkItem Added Successfully --> ", name, description, deadline);
-
+        if (name && description && deadline) {
+            addWorkItem({ name, description, deadline });
             setName('');
             setDescription('');
             setDeadline('');
-        } catch (err) {
-            setError('Failed to add work item.');
-            console.error(err);
         }
     };
 
     return (
-        <form onSubmit={handleSubmit}>
-            <label>
-                Name:
-                <input
-                    type="text"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    required
-                />
-            </label>
-            <label>
-                Description:
-                <input
-                    type="text"
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
-                    required
-                />
-            </label>
-            <label>
-                Deadline:
-                <input
-                    type="date"
-                    value={deadline}
-                    onChange={(e) => setDeadline(e.target.value)}
-                    required
-                />
-            </label>
-            <button type="submit">Add Work Item</button>
-            {error && <p style={{ color: 'red' }}>{error}</p>} {/* Display error message */}
-        </form>
+        <Box component="form" onSubmit={handleSubmit} sx={{ mb: 2 }}>
+            <Typography variant="h6">Add Work Item</Typography>
+            <TextField
+                label="Name"
+                variant="outlined"
+                fullWidth
+                margin="normal"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+            />
+            <TextField
+                label="Description"
+                variant="outlined"
+                fullWidth
+                margin="normal"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                required
+            />
+            <TextField
+                label="Deadline"
+                variant="outlined"
+                fullWidth
+                margin="normal"
+                type="date"
+                value={deadline}
+                onChange={(e) => setDeadline(e.target.value)}
+                required
+                InputLabelProps={{
+                    shrink: true,
+                }}
+            />
+            <Button variant="contained" color="primary" type="submit">
+                Add Work Item
+            </Button>
+        </Box>
     );
+};
+
+AddWorkItemForm.propTypes = {
+    addWorkItem: PropTypes.func.isRequired,
 };
 
 export default AddWorkItemForm;

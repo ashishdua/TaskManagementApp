@@ -20,6 +20,9 @@ namespace WebAPI.Controllers
         public async Task<ActionResult<List<WorkItem>>> GetWorkItem()
         {
             var workItems = await _workItemService.GetAllWorkItems();
+            if(!workItems.Any())
+                return NotFound("No work items found");
+                
             return Ok(workItems);
         }
 

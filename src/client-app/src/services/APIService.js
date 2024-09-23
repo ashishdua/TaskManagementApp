@@ -7,7 +7,14 @@ export const addWorkItem = async (workItem) => {
         const response = await axios.post(API_URL, workItem);
         return response.data;
     } catch (error) {
-        // You can also log error details here if needed
         throw new Error('Error adding work item: ' + error.message);
     }
 };
+
+export const getWorkItems = async () => {
+    try {
+        return await axios.get(API_URL);
+    } catch (error) {
+        throw new Error('Error in fetching work items: ' + error.message);
+    }
+}
