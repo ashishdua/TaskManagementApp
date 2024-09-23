@@ -1,20 +1,28 @@
 using Application.Interfaces;
 using Core.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories
 {
     public class WorkItemRepository : IWorkItemRepository
     {
-        private readonly List<WorkItem> _workItems = new List<WorkItem>();
-        public Task<List<WorkItem>> GetAllWorkItems()
+        private readonly ApplicationDbContext _context;
+
+        public WorkItemRepository(ApplicationDbContext context)
         {
-            return Task.FromResult(_workItems.ToList());
+            _context = context;
         }
 
-        public Task<WorkItem> AddWorkItem(WorkItem workItem)
+        public async Task<List<WorkItem>> GetAllWorkItems()
         {
-            _workItems.Add(workItem);
-            return Task.FromResult(workItem);
+            return await _context.WorkItems.ToListAsync();
+        }
+
+        public async Task<WorkItem> AddWorkItem(WorkItem workItem)
+        {
+            _context.WorkItems.Add(workItem);
+            await _context.SaveChangesAsync();
+            return workItem;
         }
     }
 }

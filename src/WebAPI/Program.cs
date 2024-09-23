@@ -1,6 +1,8 @@
 using Application.Features.WorkItems;
 using Application.Interfaces;
 using Infrastructure.Repositories;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +17,9 @@ builder.Services.AddCors(options =>
 });
 
 builder.Services.AddControllers();
+
+builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlite("Data Source=workitems.db"));
+
 builder.Services.AddScoped<IWorkItemRepository, WorkItemRepository>();
 builder.Services.AddScoped<IWorkItemService, WorkItemService>();
 

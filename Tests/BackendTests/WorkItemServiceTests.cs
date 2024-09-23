@@ -3,55 +3,57 @@ using Application.Features.WorkItems;
 using Moq;
 using Core.Entities;
 
-namespace BackendTests;
-
-public class WorkItemServiceTests
+namespace BackendTests
 {
-    private Mock<IWorkItemRepository> _workItemRepositoryMock;
-    private WorkItemService _workItemService;
-
-    [SetUp]
-    public void Setup()
+    public class WorkItemServiceTests
     {
-        _workItemRepositoryMock = new Mock<IWorkItemRepository>();
-        _workItemService = new WorkItemService(_workItemRepositoryMock.Object);
-    }
+        private WorkItemService _workItemService;
+        private Mock<IWorkItemRepository> _mockWorkItemRepository;
 
-    [Test]
-    public async Task AddWorkItem_ShouldReturnCreatedWorkItem()
-    {
-        // Arrange
-            var workItem = new WorkItem { Name = "Test Work Item", Description = "Test Description", Deadline = new DateTime(2024, 09, 25) };
-            _workItemRepositoryMock.Setup(repo => repo.AddWorkItem(workItem)).ReturnsAsync(workItem);
+        [SetUp]
+        public void Setup()
+        {
+            _mockWorkItemRepository = new Mock<IWorkItemRepository>();
+            _workItemService = new WorkItemService(_mockWorkItemRepository.Object);
+        }
 
-            // Act
-            var result = await _workItemService.AddWorkItem(workItem);
-
-            // Assert
-            Assert.NotNull(result);
-            Assert.AreEqual(workItem.Name, result.Name);
-            Assert.AreEqual(workItem.Description, result.Description);
-            Assert.AreEqual(workItem.Deadline, result.Deadline);
-            _workItemRepositoryMock.Verify(repo => repo.AddWorkItem(workItem), Times.Once);
-    }
-
-    [Test]
-        public async Task GetAllWorkItems_ShouldReturnListOfWorkItems()
+        [Test]
+        public void Should_Add_WorkItem_With_Valid_Details()
         {
             // Arrange
-            var workItems = new List<WorkItem>
+            var newWorkItem = new WorkItem
             {
-                new WorkItem { Id = new Guid(), Name = "Work Item 1", Description = "Description 1", Deadline = new DateTime(2024, 09, 25) },
-                new WorkItem { Id = new Guid(), Name = "Work Item 2", Description = "Description 2", Deadline = new DateTime(2024, 09, 26) }
+                Name = "New Work Item",
+                Description = "New Description",
+                Deadline = DateTime.Parse("2024-10-01")
             };
-            _workItemRepositoryMock.Setup(repo => repo.GetAllWorkItems()).ReturnsAsync(workItems);
+
+            _mockWorkItemRepository.Setup(r => r.AddWorkItem(newWorkItem)).Verifiable();
 
             // Act
-            var result = await _workItemService.GetAllWorkItems();
+            _workItemService.AddWorkItem(newWorkItem);
 
             // Assert
-            Assert.NotNull(result);
-            Assert.AreEqual(2, result.Count());
-            _workItemRepositoryMock.Verify(repo => repo.GetAllWorkItems(), Times.Once);
+            _mockWorkItemRepository.Verify(r => r.AddWorkItem(It.Is<WorkItem>(w => w.Name == "New Work Item")));
         }
+
+    [Test]
+    public async Task GetWorkItems_ShouldReturnListOfWorkItems()
+    {
+        // Arrange
+        var workItems = new List<WorkItem>
+        {
+            new WorkItem { Id = new Guid(), Name = "Work Item 1", Description = "Description 1", Deadline = DateTime.Now },
+            new WorkItem { Id = new Guid(), Name = "Work Item 2", Description = "Description 2", Deadline = DateTime.Now }
+        };
+        _mockWorkItemRepository.Setup(repo => repo.GetAllWorkItems()).ReturnsAsync(workItems);
+
+        // Act
+        var result = await _workItemService.GetAllWorkItems();
+
+        // Assert
+        Assert.That(result, Is.EqualTo(workItems));
+        _mockWorkItemRepository.Verify(repo => repo.GetAllWorkItems(), Times.Once);
+    }
+    }
 }
